@@ -5,7 +5,7 @@ import { Plus } from "lucide-react"
 
 export default function Header() {
   return (
-    <header className="px-6 py-4 border-b flex items-center justify-between bg-background/70 backdrop-blur-md sticky top-0 z-50">
+    <header className="px-10 py-4 border-b flex items-center justify-between bg-background/70 backdrop-blur-md sticky top-0 z-50">
       {/* Logo / Title */}
       <h3 className="text-2xl font-semibold tracking-tight">
         NoteApp
