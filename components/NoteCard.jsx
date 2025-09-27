@@ -1,8 +1,10 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { Button } from "./ui/button"
 import { Trash2, Edit } from "lucide-react"
+import { usePopup } from "@/context/popupContext"
 
-export default function NoteCard({ title, content, date }) {
+export default function NoteCard({ title, content }) {
+  const { openPopup } = usePopup()
   return (
     <Card>
       <CardHeader>
@@ -14,7 +16,7 @@ export default function NoteCard({ title, content, date }) {
       <CardFooter className="flex justify-end gap-2">
         
         <div className="flex justify-end gap-2">
-            <Button variant="outline">
+            <Button variant="outline" onClick={openPopup}>
             <Edit />
             </Button>
             <Button variant="destructive">

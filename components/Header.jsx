@@ -1,9 +1,12 @@
+"use client";
 import { Button } from "./ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Plus } from "lucide-react"
+import { usePopup } from "@/context/popupContext"
 
 export default function Header() {
+  const {openPopup}  = usePopup()
   return (
     <header className="px-10 py-4 border-b flex items-center justify-between bg-background/70 backdrop-blur-md sticky top-0 z-50">
       {/* Logo / Title */}
@@ -12,8 +15,8 @@ export default function Header() {
       </h3>
 
       {/* Actions */}
-      <div className="flex items-center gap-6">
-        <Button size="sm"><Plus/> New note </Button>
+      <div className="flex items-center gap-4">
+        <Button size="" onClick={openPopup}><Plus/> New note </Button>
 
         {/* User Profile Dropdown */}
         <DropdownMenu>
