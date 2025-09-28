@@ -1,3 +1,4 @@
+'use client';
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,11 +12,31 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import GithubIcon from "./social-icons/github-icon"
 import GoogleIcon from "./social-icons/google-icon"
+import { useState } from "react"
+import { useAuth } from "@/context/AuthContext";
 
 export function RegisterForm({
   className,
   ...props
 }) {
+    const { registerUser } = useAuth()
+    const [registerForm , setRegisterForm] = useState({
+        name :  '' , 
+        password : '', 
+        confirmPassword : '',
+        email : '',
+    })
+
+
+
+    const handleChange = (e)=>{
+        setRegisterForm({
+            ...registerForm , 
+            [e.target.id] : e.target.value
+        })
+    }
+
+    
   return (
     <div className={cn("flex flex-col gap-6 w-full md:max-w-md", className)} {...props}>
       <Card>
@@ -26,7 +47,10 @@ export function RegisterForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={(e)=>{
+            e.preventDefault()
+            registerUser(registerForm)
+          }}>
             <div className="grid gap-6">
               {/* Social buttons */}
               <div className="flex flex-col gap-4">
@@ -51,19 +75,19 @@ export function RegisterForm({
               <div className="grid gap-6">
                 <div className="grid gap-3">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" type="text" placeholder="John Doe" required />
+                  <Input id="name" type="text" placeholder="John Doe" required onChange={handleChange} />
                 </div>
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="m@example.com" required />
+                  <Input id="email" type="email" placeholder="m@example.com" required onChange={handleChange} />
                 </div>
                 <div className="grid gap-3">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" required />
+                  <Input id="password" type="password" required onChange={handleChange} />
                 </div>
                 <div className="grid gap-3">
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input id="confirmPassword" type="password" required />
+                  <Input id="confirmPassword" type="password" required onChange={handleChange} />
                 </div>
                 <Button type="submit" className="w-full">
                   Create Account

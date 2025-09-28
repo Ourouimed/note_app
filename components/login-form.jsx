@@ -1,3 +1,4 @@
+'use client';
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,11 +12,25 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import GithubIcon from "./social-icons/github-icon"
 import GoogleIcon from "./social-icons/google-icon"
+import { useAuth } from "@/context/AuthContext"
+import { useState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }) {
+  const { loginUser } = useAuth()
+  const [loginForm , setLoginForm ] = useState({
+    email : '' , 
+    password : ''
+  })
+
+  const handleChange = (e)=>{
+      setLoginForm({
+          ...loginForm , 
+          [e.target.id] : e.target.value
+      })
+  }
   return (
     <div className={cn("flex flex-col gap-6 w-full md:max-w-md", className)} {...props}>
       <Card>
@@ -26,7 +41,10 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={(e)=>{
+              e.preventDefault()
+              loginUser(loginForm)
+          }}>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button variant="outline" className="w-full">
@@ -47,7 +65,7 @@ export function LoginForm({
               <div className="grid gap-6">
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="m@example.com" required />
+                  <Input id="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
                 </div>
                 <div className="grid gap-3">
                   <div className="flex items-center">
@@ -56,7 +74,7 @@ export function LoginForm({
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input id="password" type="password" required onChange={handleChange}/>
                 </div>
                 <Button type="submit" className="w-full">
                   Login

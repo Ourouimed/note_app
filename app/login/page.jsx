@@ -1,7 +1,8 @@
 import { LoginForm } from "@/components/login-form";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function Login(){
-    return <div className="w-full p-5 min-h-screen flex justify-center items-center">
+    return <AuthProvider><div className="w-full p-5 min-h-screen flex justify-center items-center">
         <LoginForm/>
-    </div>
+    </div></AuthProvider>
 }
