@@ -1,30 +1,29 @@
-'use client';
-import { createContext, useContext, useState, useMemo } from "react";
+"use client";
+import React, { createContext, useContext, useState } from "react";
 
 const PopupContext = createContext();
 
-export function PopupProvider({ children }) {
+export const PopupProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const openPopup = () => {
+  const [content, setContent] = useState(null);
+  const [title, setTitle] = useState(null);
+
+  const openPopup = (title ,popupContent) => {
+    setTitle(title);
+    setContent(popupContent);
     setIsOpen(true);
   };
 
   const closePopup = () => {
+    setContent(null);
     setIsOpen(false);
   };
 
-  const value = useMemo(
-    () => ({ isOpen, openPopup, closePopup }),
-    [isOpen]
-  );
-
   return (
-    <PopupContext.Provider value={value}>
+    <PopupContext.Provider value={{ isOpen, content, title , openPopup, closePopup }}>
       {children}
     </PopupContext.Provider>
   );
-}
+};
 
-export function usePopup() {
-  return useContext(PopupContext);
-}
+export const usePopup = () => useContext(PopupContext);

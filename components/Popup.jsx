@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { usePopup } from "@/context/popupContext";
 
-export function Popup({ title, children }) {
-  const { isOpen, closePopup } = usePopup();
+export function Popup() {
+  const { isOpen, title , content, closePopup} = usePopup();
 
-  if (!isOpen) return null;
+    if (!isOpen) return null;
+
 
   // Prevent clicks inside the popup from closing it
   const handleContentClick = (e) => {
@@ -32,7 +33,7 @@ export function Popup({ title, children }) {
         </div>
 
         {/* Popup Content */}
-        <div className="p-4">{children}</div>
+        <div className="p-4">{content}</div>
       </div>
     </div>
   );

@@ -4,9 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Plus } from "lucide-react"
 import { usePopup } from "@/context/popupContext"
+import NoteForm from "./popupForms/noteForm";
 
 export default function Header() {
-  const {openPopup}  = usePopup()
+  const {openPopup }  = usePopup()
   return (
     <header className="px-10 py-4 border-b flex items-center justify-between bg-background/70 backdrop-blur-md sticky top-0 z-50">
       {/* Logo / Title */}
@@ -16,7 +17,7 @@ export default function Header() {
 
       {/* Actions */}
       <div className="flex items-center gap-4">
-        <Button size="" onClick={openPopup}><Plus/> New note </Button>
+        <Button size="" onClick={()=>{openPopup('Add new note' , <NoteForm/>)}}><Plus/> New note </Button>
 
         {/* User Profile Dropdown */}
         <DropdownMenu>
@@ -40,6 +41,8 @@ export default function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      
     </header>
   )
 }
