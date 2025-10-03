@@ -1,38 +1,42 @@
 "use client";
 import { supabase } from "@/lib/supabaseClient";
-import { createContext, useContext, useState } from "react";
-import { useRouter } from "next/navigation"; 
+import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
   const [status, setStatus] = useState(null);
   const [statusMsg, setStatusMsg] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const registerUser = async ({ name, email, password }) => {
+  // Register
+  const registerUser = async ({ name, email, password , username }) => {
+    setIsLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { name } 
-      }
+        data: { name , username},
+      },
     });
 
     if (error) {
       setStatus(false);
       setStatusMsg(error.message);
-      console.log(error);
     } else {
       setStatus(true);
       setStatusMsg("User registered successfully!");
-      console.log(data);
-
-      // Redirect to login page
-      router.push("/login"); 
+      router.push("/login");
     }
+    setIsLoading(false);
   };
 
+  // Login
   const loginUser = async ({ email, password }) => {
+    setIsLoading(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -41,22 +45,60 @@ export const AuthProvider = ({ children }) => {
     if (error) {
       setStatus(false);
       setStatusMsg(error.message);
-      console.log(error);
     } else {
-        setStatus(true);
-        setStatusMsg("Login successfully!");
-        console.log(data);
-  
-        // Redirect to home page
-        router.push("/"); 
+      setStatus(true);
+      setStatusMsg("Login successfully!");
+      setUser(data.user); 
+      router.push("/");
+    }
+    setIsLoading(false);
+  };
+
+  // Logout
+  const logoutUser = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    router.push("/login");
+  };
+
+  // On mount, get user + listen for changes
+  useEffect(() => {
+    const getUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (!error && data?.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
       }
-  }
-
+      setIsLoading(false);
+    };
+    getUser();
   
-
+    // listen for login/logout
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+  
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+  
 
   return (
-    <AuthContext.Provider value={{ registerUser , loginUser, status, statusMsg }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        registerUser,
+        loginUser,
+        logoutUser,
+        status,
+        statusMsg,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
