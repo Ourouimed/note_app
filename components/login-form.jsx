@@ -19,32 +19,60 @@ export function LoginForm({
   className,
   ...props
 }) {
-  const { loginUser } = useAuth()
+  const { loginUser, isLoading, status, statusMsg } = useAuth()
   const [loginForm , setLoginForm ] = useState({
     email : '' , 
     password : ''
   })
+
+  const [formErrors, setFormErrors] = useState({});
 
   const handleChange = (e)=>{
       setLoginForm({
           ...loginForm , 
           [e.target.id] : e.target.value
       })
+      setFormErrors((prev)=>({
+        ...prev,
+        [e.target.id] : ""
+      }))
   }
+  
+  const validateForm = ()=>{
+    const errors = {};
+    
+    if(!loginForm.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(loginForm.email)) {
+      errors.email = "Invalid email address";
+    }
+    
+    if(!loginForm.password.trim()) {
+      errors.password = "Password is required";
+    } else if (loginForm.password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
+  const handleSubmit = (e)=>{
+    e.preventDefault()
+    if (!validateForm()) return;
+    loginUser(loginForm)
+   }
   return (
     <div className={cn("flex flex-col gap-6 w-full md:max-w-md", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
-            Login with your Apple or Google account
+            Login with your Github or Google account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={(e)=>{
-              e.preventDefault()
-              loginUser(loginForm)
-          }}>
+          
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 <Button variant="outline" className="w-full">
@@ -62,32 +90,55 @@ export function LoginForm({
                   Or continue with
                 </span>
               </div>
-              <div className="grid gap-6">
-                <div className="grid gap-3">
+
+              <form onSubmit={handleSubmit} noValidate>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="m@example.com" 
+                    value={loginForm.email}
+                    onChange={handleChange}
+                  />
+                  {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
                 </div>
-                <div className="grid gap-3">
+                <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required onChange={handleChange}/>
+                  <Input 
+                    id="password" 
+                    type="password" 
+                    value={loginForm.password}
+                    onChange={handleChange}
+                  />
+                  {formErrors.password && <p className="text-red-500 text-sm">{formErrors.password}</p>}
                 </div>
-                <Button type="submit" className="w-full">
-                  Login
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? 'Logging in...' : 'Login'}
                 </Button>
               </div>
+
+              </form>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <a href="./register" className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>
+
+              {/* Error status message */}
+              {status === false && (
+                <p className="bg-red-100 text-red-700 font-medium text-sm p-3 rounded-md border border-red-400 text-center">
+                  {statusMsg}
+                </p>
+              )}
             </div>
-          </form>
         </CardContent>
       </Card>
       <div

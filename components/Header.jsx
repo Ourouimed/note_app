@@ -65,11 +65,11 @@ export default function Header() {
                 </Avatar>
                 <div className="hidden sm:flex flex-col items-start">
                   <span className="font-medium">{userMeta.name}</span>
-                  {userMeta.username && (
+                  {/* {userMeta.username && (
                     <span className="text-xs text-muted-foreground">
                       @{userMeta.username}
                     </span>
-                  )}
+                  )} */}
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-48" align="end">

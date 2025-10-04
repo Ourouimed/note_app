@@ -20,7 +20,6 @@ export function RegisterForm({ className, ...props }) {
   const { registerUser, isLoading, status, statusMsg } = useAuth();
 
   const [formData, setFormData] = useState({
-    username: '',
     name: '',
     email: '',
     password: '',
@@ -37,9 +36,6 @@ export function RegisterForm({ className, ...props }) {
 
   const validateForm = () => {
     const errors = {};
-
-    if (!formData.username.trim()) errors.username = "Username is required";
-    else if (formData.username.length < 3) errors.username = "Username must be at least 3 characters";
 
     if (!formData.name.trim()) errors.name = "Name is required";
 
@@ -72,7 +68,7 @@ export function RegisterForm({ className, ...props }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} noValidate>
+          
             <div className="grid gap-6">
               {/* Social buttons */}
               <div className="flex flex-col gap-4">
@@ -86,25 +82,22 @@ export function RegisterForm({ className, ...props }) {
                 </Button>
               </div>
 
-              {/* Divider */}
+            
               <div className="relative text-center text-sm after:border-border after:absolute after:inset-0 after:top-1/2 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                   Or continue with
                 </span>
               </div>
 
+              <form onSubmit={handleSubmit} noValidate>
+
               {/* Form fields */}
               <div className="grid gap-4">
-                {/* Username */}
-                <div className="grid gap-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input id="username" type="text" placeholder="johndoe123" onChange={handleChange} />
-                  {formErrors.username && <p className="text-red-500 text-sm">{formErrors.username}</p>}
-                </div>
+  
 
                 {/* Name */}
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">Full Name</Label>
                   <Input id="name" type="text" placeholder="John Doe" onChange={handleChange} />
                   {formErrors.name && <p className="text-red-500 text-sm">{formErrors.name}</p>}
                 </div>
@@ -135,6 +128,8 @@ export function RegisterForm({ className, ...props }) {
                 </Button>
               </div>
 
+              </form>
+
               {/* Footer */}
               <div className="text-center text-sm">
                 Already have an account?{" "}
@@ -149,8 +144,8 @@ export function RegisterForm({ className, ...props }) {
                   {statusMsg}
                 </p>
               )}
+            
             </div>
-          </form>
         </CardContent>
       </Card>
 

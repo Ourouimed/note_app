@@ -8,7 +8,7 @@ export const PopupProvider = ({ children }) => {
   const [content, setContent] = useState(null);
   const [title, setTitle] = useState(null);
 
-  const openPopup = (title ,popupContent) => {
+  const openPopup = (title , popupContent) => {
     setTitle(title);
     setContent(popupContent);
     setIsOpen(true);

@@ -9,7 +9,6 @@ export function Popup() {
     if (!isOpen) return null;
 
 
-  // Prevent clicks inside the popup from closing it
   const handleContentClick = (e) => {
     e.stopPropagation();
   };
@@ -17,12 +16,12 @@ export function Popup() {
   return (
     <div
       className="fixed w-full h-screen flex justify-center items-center top-0 inset-0 z-50 bg-black/50"
-      onClick={closePopup} // Click on overlay closes popup
+      onClick={closePopup} 
     >
       {/* Popup */}
       <div
         className="bg-background border shadow-lg rounded-lg w-full sm:max-w-lg"
-        onClick={handleContentClick} // Prevent closing when clicking inside
+        onClick={handleContentClick}
       >
         {/* Popup Header */}
         <div className="flex items-center justify-between p-4 border-b">
