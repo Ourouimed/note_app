@@ -22,6 +22,14 @@ export default function NotesContainer() {
     );
   }
 
+  // if (!isLoading) {
+  //   return (
+  //     <div className="px-10 py-4 flex justify-center items-center">
+  //       <div className="text-lg text-gray-500">Loading notes...</div>
+  //     </div>
+  //   );
+  // }
+
   if (notes.length === 0) {
     return (
       <div className="px-10 py-4 flex justify-center items-center">
@@ -38,7 +46,7 @@ export default function NotesContainer() {
           id={note.id}
           title={note.note_title} 
           content={note.note_content} 
-          date={note.created_at}
+          created_at={note.created_at}
         />
       ))}
     </div>

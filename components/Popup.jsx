@@ -20,7 +20,7 @@ export function Popup() {
     >
       {/* Popup */}
       <div
-        className="bg-background border shadow-lg rounded-lg w-full sm:max-w-lg"
+        className="bg-background border shadow-lg rounded-lg w-4/5 sm:max-w-lg"
         onClick={handleContentClick}
       >
         {/* Popup Header */}
