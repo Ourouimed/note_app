@@ -50,7 +50,7 @@ export default function NoteCard({ id, title, content, created_at }) {
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            onClick={() => openPopup("Edit note", <NoteForm />)}
+            onClick={() => openPopup("Edit note", <NoteForm note={{ id, title, content, created_at }}/>)}
           >
             <Edit className="w-4 h-4" />
           </Button>

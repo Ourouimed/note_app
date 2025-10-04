@@ -13,7 +13,8 @@ import { Label } from "@/components/ui/label"
 import GithubIcon from "./social-icons/github-icon"
 import GoogleIcon from "./social-icons/google-icon"
 import { useAuth } from "@/context/AuthContext"
-import { useState } from "react";
+import { useState , useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -26,6 +27,8 @@ export function LoginForm({
   })
 
   const [formErrors, setFormErrors] = useState({});
+  const { user } = useAuth()
+  const router = useRouter()
 
   const handleChange = (e)=>{
       setLoginForm({
@@ -62,6 +65,11 @@ export function LoginForm({
     if (!validateForm()) return;
     loginUser(loginForm)
    }
+
+   useEffect(() => {
+     if (user) router.push("/");
+   }, [user, router]);
+   
   return (
     <div className={cn("flex flex-col gap-6 w-full md:max-w-md", className)} {...props}>
       <Card>

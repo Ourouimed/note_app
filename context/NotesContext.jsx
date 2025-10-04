@@ -80,6 +80,28 @@ export const NotesProvider = ({ children }) => {
     return { success: true };
   };
 
+  // update note 
+  const updateNote = async (note_id , {note_title, note_content }) => {
+    if (!user?.id) return { success: false, message: "User not logged in" };
+
+    setIsLoading(true);
+    const { error } = await supabase
+      .from("notes")
+      .update([{ note_title, note_content, user_id: user.id }])
+      .eq('id' , note_id)
+    setIsLoading(false);
+
+    if (error) {
+      setStatus(false);
+      setStatusMsg(error.message);
+      return { success: false, message: error.message };
+    }
+
+    setStatus(true);
+    await getNotes();
+    return { success: true };
+  };
+
   // Auto clear status messages
   useEffect(() => {
     if (statusMsg) {
@@ -98,6 +120,7 @@ export const NotesProvider = ({ children }) => {
         getNotes,
         addNewNote,
         deleteNote,
+        updateNote,
       }}
     >
       {children}
