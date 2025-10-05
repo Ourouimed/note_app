@@ -61,6 +61,38 @@ export const AuthProvider = ({ children }) => {
     router.push("/login");
   };
 
+
+  const resetPass = async (email)=>{
+    setIsLoading(true);
+    const {data , error } = await supabase.auth.resetPasswordForEmail(email , {
+        redirectTo: `${window.location.origin}/reset-pass`,
+    })
+    if (error) {
+      setStatus(false);
+      setStatusMsg(error.message);
+    } else {
+      setStatus(true);
+      setStatusMsg("Reset Link Sent Succefully");
+    }
+    setIsLoading(false);
+  }
+
+  // Update password
+  const updatePassword = async (newPassword) => {
+    setIsLoading(true);
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    if (error) {
+      setStatus(false);
+      setStatusMsg(error.message);
+    } else {
+      setStatus(true);
+      setStatusMsg("Password updated successfully!");
+    }
+    setIsLoading(false);
+  };
   // On mount, get user + listen for changes
   useEffect(() => {
     const getUser = async () => {
@@ -87,11 +119,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
   
 
+
   return (
     <AuthContext.Provider
       value={{
         user,
         isLoading,
+        resetPass,
+        updatePassword,
         registerUser,
         loginUser,
         logoutUser,

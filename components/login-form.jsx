@@ -15,6 +15,7 @@ import GoogleIcon from "./social-icons/google-icon"
 import { useAuth } from "@/context/AuthContext"
 import { useState , useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { LogIn, AlertCircle } from "lucide-react";
 
 export function LoginForm({
   className,
@@ -74,6 +75,11 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6 w-full md:max-w-md", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
+          <div className="flex justify-center mb-3">
+            <div className="p-3 rounded-full bg-blue-50 dark:bg-blue-950">
+              <LogIn className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            </div>
+          </div>
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
             Login with your Github or Google account
@@ -109,13 +115,19 @@ export function LoginForm({
                     placeholder="m@example.com" 
                     value={loginForm.email}
                     onChange={handleChange}
+                    className={formErrors.email ? "border-red-500 focus:border-red-500" : ""}
                   />
-                  {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
+                  {formErrors.email && (
+                    <p className="text-red-500 text-sm flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {formErrors.email}
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
-                    <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
+                    <a href="./forgot-pass" className="ml-auto text-sm underline-offset-4 hover:underline">
                       Forgot your password?
                     </a>
                   </div>
@@ -124,8 +136,14 @@ export function LoginForm({
                     type="password" 
                     value={loginForm.password}
                     onChange={handleChange}
+                    className={formErrors.password ? "border-red-500 focus:border-red-500" : ""}
                   />
-                  {formErrors.password && <p className="text-red-500 text-sm">{formErrors.password}</p>}
+                  {formErrors.password && (
+                    <p className="text-red-500 text-sm flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {formErrors.password}
+                    </p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? 'Logging in...' : 'Login'}
@@ -140,11 +158,15 @@ export function LoginForm({
                 </a>
               </div>
 
-              {/* Error status message */}
-              {status === false && (
-                <p className="bg-red-100 text-red-700 font-medium text-sm p-3 rounded-md border border-red-400 text-center">
+              {/* Status message */}
+              {status !== null && (
+                <div className={`${
+                  status 
+                    ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-400 dark:border-green-800" 
+                    : "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-800"
+                } font-medium text-sm p-3 rounded-md border text-center`}>
                   {statusMsg}
-                </p>
+                </div>
               )}
             </div>
         </CardContent>
