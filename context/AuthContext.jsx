@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setStatus(true);
       setStatusMsg("User registered successfully!");
-      router.push("/login");
+      router.push(`/confirm?email=${encodeURIComponent(email)}`);
     }
     setIsLoading(false);
   };
