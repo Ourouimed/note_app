@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import {
   Card,
   CardHeader,
@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Mail, ArrowLeft, RefreshCw, CheckCircle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function ConfirmEmail() {
+function ConfirmEmailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
@@ -125,5 +125,19 @@ export default function ConfirmEmail() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ConfirmEmail() {
+  return (
+    <Suspense fallback={
+      <div className="w-full p-5 min-h-screen flex justify-center items-center">
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+      </div>
+    }>
+      <ConfirmEmailContent />
+    </Suspense>
   );
 }
