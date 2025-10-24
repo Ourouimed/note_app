@@ -34,6 +34,18 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
+  const handleGithubLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: 'http://localhost:5173/', // or your production URL
+      },
+    });
+
+    if (error) console.error(error);
+    else console.log('Redirecting to GitHub...');
+  };
+
   // Login
   const loginUser = async ({ email, password }) => {
     setIsLoading(true);
@@ -93,7 +105,8 @@ export const AuthProvider = ({ children }) => {
     }
     setIsLoading(false);
   };
-  // On mount, get user + listen for changes
+  
+  
   useEffect(() => {
     const getUser = async () => {
       const { data, error } = await supabase.auth.getUser();
@@ -132,6 +145,7 @@ export const AuthProvider = ({ children }) => {
         logoutUser,
         status,
         statusMsg,
+        handleGithubLogin
       }}
     >
       {children}
