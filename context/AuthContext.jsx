@@ -38,12 +38,36 @@ export const AuthProvider = ({ children }) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: 'http://localhost:5173/', // or your production URL
+        redirectTo: 'https://note-app-chi-eosin.vercel.app', 
       },
     });
 
-    if (error) console.error(error);
-    else console.log('Redirecting to GitHub...');
+    if (error) {
+      setStatus(false)
+      setStatusMsg(error.message)
+    }
+    else {
+      setStatus(true)
+      setStatusMsg('Redirecting to Github...')
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://note-app-chi-eosin.vercel.app', 
+      },
+    });
+
+    if (error) {
+      setStatus(false)
+      setStatusMsg(error.message)
+    }
+    else {
+      setStatus(true)
+      setStatusMsg('Redirecting to Google...')
+    }
   };
 
   // Login
@@ -89,7 +113,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }
 
-  // Update password
+
   const updatePassword = async (newPassword) => {
     setIsLoading(true);
     const { data, error } = await supabase.auth.updateUser({
@@ -106,7 +130,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
   
-  
+
   useEffect(() => {
     const getUser = async () => {
       const { data, error } = await supabase.auth.getUser();
@@ -145,7 +169,8 @@ export const AuthProvider = ({ children }) => {
         logoutUser,
         status,
         statusMsg,
-        handleGithubLogin
+        handleGithubLogin,
+        handleGoogleLogin
       }}
     >
       {children}

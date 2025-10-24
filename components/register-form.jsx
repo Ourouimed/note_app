@@ -18,7 +18,7 @@ import { useAuth } from "@/context/AuthContext";
 import { UserPlus, AlertCircle } from "lucide-react";
 
 export function RegisterForm({ className, ...props }) {
-  const { registerUser, isLoading, status, statusMsg , handleGithubLogin} = useAuth();
+  const { registerUser, isLoading, status, statusMsg , handleGithubLogin , handleGoogleLogin} = useAuth();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -82,7 +82,7 @@ export function RegisterForm({ className, ...props }) {
                   <GithubIcon />
                   Sign up with GitHub
                 </Button>
-                <Button type="button" variant="outline" className="w-full">
+                <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin}>
                   <GoogleIcon />
                   Sign up with Google
                 </Button>

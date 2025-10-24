@@ -21,7 +21,7 @@ export function LoginForm({
   className,
   ...props
 }) {
-  const { loginUser, isLoading, status, statusMsg , handleGithubLogin} = useAuth()
+  const { loginUser, isLoading, status, statusMsg , handleGithubLogin , handleGoogleLogin} = useAuth()
   const [loginForm , setLoginForm ] = useState({
     email : '' , 
     password : ''
@@ -93,7 +93,7 @@ export function LoginForm({
                   <GithubIcon/>
                   Login with Github
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full" onClick={handleGoogleLogin}>
                   <GoogleIcon/>
                   Login with Google
                 </Button>
