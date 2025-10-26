@@ -56,7 +56,7 @@ export default function Header() {
               <DropdownMenuTrigger className="flex items-center gap-3 focus:outline-none">
                 <Avatar className="h-10 w-10">
                   <AvatarImage
-                    src="/placeholder-avatar.png"
+                    src={user.user_metadata.avatar_url}
                     alt={`${userMeta.name}'s avatar`}
                   />
                   <AvatarFallback aria-label="User initials">
